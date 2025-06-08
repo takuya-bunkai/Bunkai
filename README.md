@@ -1,4 +1,4 @@
-# bunkai.com | ServiceNow Sensei
+# bunkai.com | Now Sensei
 
 分解して、構造を知る。世界の「わかる」を広げていく。
 
