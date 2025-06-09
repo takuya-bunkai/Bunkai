@@ -93,7 +93,7 @@
   <p><strong>🔄 Off-Instance Processing（オフインスタンス処理）</strong><br>ServiceNowのインスタンス外（オフインスタンス）でデータ処理を行う仕組みです。これにより、インスタンスのパフォーマンスに影響を与えることなく、大量のデータ処理や分析を実行できます。たとえば、AIエージェントの推論や大規模なデータ分析などが該当します。</p>
   <p><strong>🌐 Regional Cluster（リージョナルクラスター）</strong><br>ServiceNowのインスタンスが稼働するデータセンターと同じ、または近接するデータセンターに設置されたクラスターで処理が実行される構成を指すものと推測されます。これにより、低遅延なサービス提供が可能になります。</p>
   <p><strong>🔁 Translated to SQL Query（SQLクエリへの変換）</strong><br>ServiceNowのGlideRecord APIに対して行われたデータ操作が、バックエンドで自動的にSQLクエリに変換される仕組みが提供されるものと推測されます。これにより、開発者はServiceNow内のデータと同様の方法で外部データにアクセスできます。</p>
-  <p><strong>🧠 Federated Query Engine (Trino)（フェデレーテッドクエリエンジン：Trino）<strong><br>Trinoは、一般には複数の異なるデータソース（例：MySQL、PostgreSQL、Kafka、MongoDBなど）に対して、単一のSQLクエリでデータを取得・結合できる分散型のクエリエンジンです。この機能をServiceNow向けに最適化したものがZero Copy Connectorの機能の一部として提供されるものと見込まれます。これにより、データを一元的に分析・活用することが可能になります。</p>
+  <p><strong>🧠 Federated Query Engine (Trino)（フェデレーテッドクエリエンジン：Trino）</strong>strong><br>Trinoは、一般には複数の異なるデータソース（例：MySQL、PostgreSQL、Kafka、MongoDBなど）に対して、単一のSQLクエリでデータを取得・結合できる分散型のクエリエンジンです。この機能をServiceNow向けに最適化したものがZero Copy Connectorの機能の一部として提供されるものと見込まれます。これにより、データを一元的に分析・活用することが可能になります。</p>
   <p><strong>🔌 Extensible Connector Framework （ECF）</strong><br>外部システムとの柔軟な連携を容易にするための接続フレームワークと思われます。これにより、開発者は標準化された方法で外部データソースやサービスと接続し、データの取得や操作を行うことができます。</p>
   <p><strong>🧩 Zero Copy Connectors（構成図の中での位置づけ）</strong><br>Zero Copy Connectors は、ServiceNow が提供する連携ドライバーで、Snowflake、Databricks、BigQuery などの外部データソースに対して、データを複製することなく直接アクセスを実現するものと見込まれます。これにより、データの冗長性を排除し、リアルタイムでのデータ活用が可能になります。</p>
 </section>
