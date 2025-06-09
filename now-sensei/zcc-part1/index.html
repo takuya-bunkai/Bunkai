@@ -20,32 +20,32 @@
 
   <main>
     <section>
-      <h2>🧑‍🏫 Now Sensei シリーズへようこそ</h2>
+      <h2>🧑🏫 Now Sensei シリーズへようこそ</h2>
       <p>このシリーズでは、ServiceNowの仕組みや設計を“分解し、構造から理解する”視点で解説していきたいと思います。構成や設計の意図を見つめながら、わかることを少しずつ増やしていく──そんな試みです。</p>
 
       <p>今回は、ServiceNow Knowledge 2025 で印象に残ったトピック「Zero Copy Connectors」を取り上げ、なぜ必要なのか、どう動いているのか、どこに効くのかを2回に分けて読み解いていきます。今回は Workflow Data Fabric の全体構想と、Zero Copy Connectors の仕組みについて整理しています。</p>
 
-      <p>ServiceNow Knowledge 2025が開催されてから、もう1か月が経ちました。Times flies...<br>
+      <p><strong></strong>ServiceNow Knowledge 2025が開催されてから、もう1か月が経ちました。Time flies...<br>
       その場で味わった興奮がまだ体から完全には抜けきっていないうちに、アウトプットをすべし、するべし！ということで…</p>
 
       <p>今回は個人的に非常に印象に残った Workflow Data Fabric （WDF） の中でも、Zero Copy Connectors について、自分なりの理解をまとめてみました。</p>
 
       <h2>📌 Disclaimer</h2>
-      <p>ここに記載した内容は、Knowledge 2025 の現地でのヒアリングやオンデマンドセッションを参考に、現時点での個人的な理解をもとに構成しています。</p>
-      <p>あくまで「こういう仕組みが登場予定らしい」という情報共有の目的であり、実際の製品仕様・リリース内容は ServiceNow の公式発表をご確認ください。</p>
-      <p>また、本記事は私個人の見解であり、EYの公式見解ではありません。</p>
+      <p>ここに記載した内容は、Knowledge 2025 の現地でのヒアリングやオンデマンドセッションを参考に、<strong>現時点での個人的な理解</strong>をもとに構成しています。</p>
+      <p>あくまで「こういう仕組みが登場予定らしい」という情報共有の目的であり、<strong>実際の製品仕様・リリース内容は ServiceNow の公式発表をご確認ください。</strong></p>
+      <p>また、本記事は私個人の見解であり、<strong>EYの公式見解ではありません。</strong></p>
     </section>
 
     <section>
-  <h2>🧹 Zero Copy Connectors とは？ 〜Knowledge 2025 セッションの要約と補足〜</h2>
-  <p>「セッションは気になるけど、30分見るのは大変」——そんな方のために、内容をギュッと要約してみました！本記事は、Knowledge 2025 のセッション 「Power AI-driven workflows with Zero Copy Connectors」の内容をベースに、私自身の理解と補足を加えて構成しています。</p>
+  <h2>🧹 Zero Copy Connectors とは？ 〜Knowledge 2025 セッションの要点と補足〜</h2>
+  <p>「セッションは気になるけど、30分見るのは大変」——そんな方のために、内容をギュッと要約してみました！本記事は、Knowledge 2025 のセッション 「<a href="https://www.servicenow.com/events/knowledge/2025/sessions/power-ai-driven-workflows-with-zero-copy-connectors-.html" target="_blank">Power AI-driven workflows with Zero Copy Connectors</a>」の内容をベースに、私自身の理解と補足を加えて構成しています。</p>
   <p>このセッションでは、ServiceNow が目指す Workflow Data Fabric（WDF）構想の中で、Zero Copy Connectors がどのような位置付けで設計されており、何を解決するために存在するのかが詳細に説明されていました。</p>
   <p>ただし、セッションの視聴には ServiceNow ID でのログインが必要で、検索しても内容がヒットしにくいため、 「動画を見るのは時間がかかるし、ざっくり内容を知りたい」という方に向けて、この記事をまとめました。</p>
 </section>
 
 <section>
   <h2>🔍 Workflow Data Fabric (WDF) とは？</h2>
-  <p>ServiceNowが真のAI Platformとなるために、これまでのNow Platform上のデータに加えてServiceNow以外にあるデータにもシームレスにアクセスし、AIエージェントが活用できる構想がWDFです。</p>
+  <p>ServiceNowが真のAI Platformとなるために、これまでのNow Platform上のデータに加えて<strong>ServiceNow以外にあるデータ</strong>にも<strong>シームレスにアクセスし、AIエージェントが活用できる構想</strong>がWDFです。</p>
   <p>古くは Import Set、スクリプティングから始まった外部連携は、 Orchestration や Integration Hub を経て Automation Hub へと進化してきましたが、 WDF ではさらに以下の強化が期待されます：</p>
   <ul>
     <li>接続先の拡大</li>
@@ -65,16 +65,32 @@
     <li><strong>固定的なマッピング構造 (Rigid Data Mapping)</strong><br>実行時の情報に対する柔軟な対応が求められる中、事前定義されたマッピングでは対応が難しく、設計変更のたびに工数が発生します。</li>
     <li><strong>自動化の限界 (Limited Automation)</strong><br>多くの従来の連携は一方向またはバッチ実行に依存しており、リアルタイム双方向の自動化には向いていません。</li>
   </ol>
-  <p>その中でも特に、Zero Copy Connectors は「データを動かさずに使う」ための鍵となる機能です。</p>
+  <p>その中でも特に、<strong>Zero Copy Connectors</strong> は「データを動かさずに使う」ための鍵となる機能です。</p>
 </section>
 
 <section>
-  <h2>📊 構成図で読み解く Zero Copy Connectors</h2>
+  <h2>🧩 Zero Copy Connectors とは？</h2>
+  <p>WDFを構成する新しい機能のひとつである Zero Copy Connectors は、<strong>外部データソースに対してデータを複製することなく、ServiceNowから直接アクセスできる仕組み</strong>です。</p>
+  <p>現在、一般に確認できる情報は限られていますが、上述の Knowledge 2025 のセッション 「<strong>Power AI-driven workflows with Zero Copy Connectors</strong>」 が非常に参考になりました。</p>
+  <p>この機能のポイントは：</p>
+  <blockquote>ServiceNow上のアプリケーションから<strong>いつも通りの GlideRecord API を使って読み込み操作</strong>をすると、裏で <strong>SQLクエリに変換</strong>されて、<strong>Snowflake や Databricks</strong> などの外部データソースに直接アクセスできる。</blockquote>
+  <p>つまり：</p>
+  <ul>
+    <li>✅ データコピー不要</li>
+    <li>✅ スクリプト不要</li>
+    <li>✅ アクセス制御やUIも通常のテーブルと同じ感覚で扱える</li>
+  </ul>
+  <p>Pro Code / Low Code / No Code を問わず、<strong>ServiceNow上で外部データを"普通に"扱える世界観</strong>が実現しようとしています。</p>
+</section>
+
+<section>
+  <h2>📊 構成図はこちら👇</h2>
+  <p>（オンデマンドセッションの説明内容を元に図解しました）</p>
   <img src="/images/zcc-architecture.png" alt="Zero Copy Connectors Architecture Diagram" />
-  <p>構成図を読み解くことで、Zero Copy Connectors がどのように動作し、どこに組み込まれているのかが見えてきます。以下に構成要素とその意味を解説します。</p>
+  <p>以下、構成図の解説です。現時点でリリースされている機能ではないため、正式リリースでは異なる仕様になる可能性があります。また一部、私の推測による補足も含まれますのでご注意ください。</p>
 
   <h3>🧩 構成図内の主な要素とその意味</h3>
-  <p><strong>Off-Instance Processing：</strong> ServiceNowインスタンスの負荷を軽減するため、データ処理をServiceNow外部で行う構造です。これにより、大量データ処理や分析を高速かつ効率的に行えるようになります。AI推論や大規模なクエリ処理に有効です。</p>
+  <p><strong>🔄 Off-Instance Processing（オフインスタンス処理）</strong> ServiceNowインスタンスの負荷を軽減するため、データ処理をServiceNow外部で行う構造です。これにより、大量データ処理や分析を高速かつ効率的に行えるようになります。AI推論や大規模なクエリ処理に有効です。</p>
   <p><strong>Regional Cluster：</strong> データ処理は、ServiceNowのインスタンスと地理的に近いクラスタで実行されます。これにより、ネットワーク遅延を抑えつつ、セキュアな環境でのフェデレーテッドクエリ実行が実現されます。</p>
   <p><strong>Translated to SQL Query：</strong> アプリケーション開発者が記述する GlideRecord API でのデータアクセスは、内部的にSQLクエリへと変換され、外部データソースに対して実行されます。開発者は「従来通り」の書き方で、実は外部データにアクセスできているというわけです。</p>
   <p><strong>Federated Query Engine (Trino)：</strong> SQLに変換されたクエリは、Trinoをベースとした分散型のフェデレーテッドクエリエンジンを通じて実行されます。これにより、複数のデータソース（Snowflake, BigQueryなど）に対して統一的なインターフェースでアクセスが可能になります。</p>
