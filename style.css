@@ -1,60 +1,83 @@
+/* Now Sensei base styles */
 body {
-  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-  background-color: #ffffff;
-  color: #222;
+  font-family: 'Noto Sans JP', 'Segoe UI', sans-serif;
+  color: #333;
   margin: 0;
-  line-height: 1.8;
+  padding: 0;
+  background: #ffffff;
+  line-height: 1.7;
 }
 
 header {
-  background-color: #915dbc;
-  color: white;
+  background: #915dbc;
   padding: 2rem 1rem;
   text-align: center;
 }
 
 header h1 {
-  font-size: 2rem;
-  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
 }
 
 main {
-  max-width: 840px;
-  margin: 3rem auto;
-  padding: 0 1rem;
+  padding: 2rem 1.5rem;
+  max-width: 900px;
+  margin: auto;
 }
 
-section {
-  margin-bottom: 3rem;
+h2 {
+  font-size: 1.4rem;
+  border-left: 6px solid #915dbc;
+  padding-left: 0.6rem;
+  margin-top: 2.5rem;
 }
 
-h2, h3 {
-  color: #333;
-  border-left: 4px solid #b562d5;
-  padding-left: 0.5rem;
-  margin-top: 2rem;
+a {
+  color: #4d3ca6;
+  text-decoration: none;
 }
 
-ul, ol {
-  padding-left: 1.5rem;
+a:hover {
+  text-decoration: underline;
 }
 
-strong {
-  font-weight: 600;
+/* Now Sensei テーブルスタイル（PPT風の整形） */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 2em 0;
+  font-size: 0.95em;
+  line-height: 1.5;
+  background-color: #fff;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+th, td {
+  padding: 8px 12px;
+  border: 1px solid #dddddd;
+  vertical-align: top;
 }
 
-footer {
+th {
+  background-color: #f4f4f9;
   text-align: center;
-  padding: 2rem 1rem;
-  background-color: #f7f7f7;
-  font-size: 0.9rem;
-  color: #666;
-  border-top: 1px solid #ddd;
+  font-weight: bold;
+}
+
+tr:nth-child(even) td {
+  background-color: #fafafa;
+}
+
+tr:hover td {
+  background-color: #f2f7ff;
+}
+
+td {
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  table {
+    font-size: 0.9em;
+  }
 }
