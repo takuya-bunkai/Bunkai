@@ -17,56 +17,81 @@
     <h1>Now Sensei シリーズ</h1>
     <p>分かった気になる Zero Copy Connectors – How It Works and Where It Fits（Part 2）</p>
   </header>
+
   <main>
-    <section>
-      <h2>🧑‍🏫 Now Sensei シリーズ第2回へようこそ</h2>
-      <p>このシリーズでは、ServiceNowの仕組みや設計を“分解し、構造から理解する”視点で解説しています。</p>
-      <p>Part 1では、Workflow Data Fabric構想とZero Copy Connectorsの背景・構成図について掘り下げました。</p>
-      <p>今回のPart 2では、「実際にどう使われるのか」「既存手法と何が違うのか」「導入したときどこが変わるのか」──そういった観点で解説していきます。</p>
-    </section>
-    <section>
-      <h2>🔍 どう使うのか？（開発・実装視点）</h2>
-      <p>（ここにGlideRecordアクセス例、IntegrationHubとの違い、ACLの利点などを記述予定）</p>
-      <img src="/now-sensei/images/zcc-data-fabric-table-how-to-use.png" alt="How to Use Zero Copy Connector Tables - Application Developer view" />
-    </section>
-    <section>
-      <h2>🧩 従来手法との違い</h2>
-      <p>（Remote Table / Import Set / Integration Hub との比較など）</p>
-    </section>
-    <section>
-      <h2>🔄 管理者・運用側からの視点</h2>
-      <p>（ガバナンス、アクセス制御、データ保持責任の観点など）</p>
-    </section>
-    <section>
-      <h2>🚀 これからどう進化しそうか？</h2>
-      <p>（将来的な拡張、AI Agentとの連携、活用対象の拡大など）</p>
-    </section>
-    <section>
-      <h2>📘 まとめと呼びかけ</h2>
-      <p>Zero Copy Connectorsをどう理解し、どう活かせるか。今後も引き続き、Now Senseiシリーズで掘り下げていきます。</p>
-      <p>💬 ご意見・活用アイデアなど、ぜひコメントで教えてください！</p>
-      <p>🔗 Part 1（背景と構成図）はこちら → <a href="/now-sensei/zcc-part1/">こちら</a></p>
-    </section>
+<section>
+  <h2>🧑‍🏫 Now Sensei シリーズ第2回へようこそ</h2>
+  <p>このシリーズでは、ServiceNowの仕組みや設計を“分解し、構造から理解する”視点で解説しています。</p>
+  <p>Part 1では、Workflow Data Fabric構想とZero Copy Connectorsの背景・構成図について掘り下げました。</p>
+  <p>今回のPart 2では、「実際にどう使われるのか」「既存手法と何が違うのか」「導入したときどこが変わるのか」──そういった観点で解説していきます。</p>
+</section>
 
-    <!-- シェアセクション -->
-<div class="share-section" style="text-align: center; margin-top: 40px;">
-  <h3>このページをシェアする</h3>
-  <div class="share-buttons" style="margin-top: 10px; display: flex; justify-content: center; gap: 20px;">
-    <!-- Twitter -->
-    <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbunkai.com%2Fnow-sensei%2Fzcc-part1%2F&text=%E5%88%86%E3%81%8B%E3%81%A3%E3%81%9F%E6%B0%97%E3%81%AB%E3%81%AA%E3%82%8B%20Zero%20Copy%20Connectors%20%E2%80%93%20What%E2%80%99s%20Going%20on%20in%20Workflow%20Data%20Fabric%3F%EF%BC%88Part%201%EF%BC%89%20%7C%20Now%20Sensei" target="_blank" style="display: inline-block;">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="Twitterでシェア" width="32" height="32" style="display: block;">
-    </a>
+<section>
+  <h2>🧩 従来手法との違い（Part 1の課題をどう解決するか＋セッション内容の補足）</h2>
+  <p>Zero Copy Connectors は、Part 1で挙げたような課題──特に「高いメンテナンス負荷」「冗長なデータコピー」「運用負担の増加」──を根本的に解消するために設計されています。</p>
+  <table>
+    <thead>
+      <tr>
+        <th>観点</th>
+        <th>Remote Table</th>
+        <th>Zero Copy Connectors</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>実装方法</td>
+        <td>Scripted REST API + executeQuery スクリプト</td>
+        <td>GlideRecord API で直接アクセス</td>
+      </tr>
+      <tr>
+        <td>必要なスキルセット</td>
+        <td>REST API + JavaScript によるスクリプト実装（Pro Code）</td>
+        <td>ServiceNowの基本的なデータ構造・連携構成に対する理解があれば対応可能（Pro Code不要）</td>
+      </tr>
+      <tr>
+        <td>ACLやUI制御</td>
+        <td>一部制限あり</td>
+        <td>Platformと同様に適用可能</td>
+      </tr>
+      <tr>
+        <td>構成変更の柔軟性</td>
+        <td>スクリプト処理のため構成変更には都度実装が必要</td>
+        <td>設定ベースで柔軟に変更可能（Pro Code不要）<br>→ 新しいデータ参照構成をすぐに実現可能</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>ここでいう "構成変更の柔軟性" は、新たな外部データ参照が必要になった際にも、設定ベースで構成を素早く調整できる点を指しています。Zero Copy Connectors は設定ベースでの構成変更が可能で、従来のようにPro Code開発者の関与が必須ではありません。そのため、ビジネス側の要件変化に対して迅速に対応できる柔軟性を備えています。</p>
+</section>
 
-    <!-- Facebook -->
-    <a href="https://www.facebook.com/sharer/sharer.php?u=https://bunkai.com/now-sensei/zcc-part1/" target="_blank" style="display: inline-block;">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg" alt="Facebookでシェア" width="32" height="32" style="display: block;">
-    </a>
-    <!-- LinkedIn -->
-    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://bunkai.com/now-sensei/zcc-part1/" target="_blank" style="display: inline-block;">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedInでシェア" width="32" height="32" style="display: block;">
-    </a>
-  </div>
-</div>
-  </main>
+
+
+<section>
+  <h2>🔍 どう使うのか？（開発・実装視点）</h2>
+  <p>Zero Copy Connectors を通じて提供されるデータファブリックテーブルは、GlideRecord API を使って通常のテーブルと同じように読み取りが可能です。開発者は特別なスクリプトや変換処理を書くことなく、ServiceNow のアプリケーション層から外部データをそのまま扱うことができます。</p>
+  <p>セッション内でも "you have full GlideRecord access" と強調されていたように、Zero Copy Connectors は既存の開発スキルをそのまま活かせるアプローチです。開発者にとっては、まるで Now Platform 内のネイティブテーブルを扱っているかのような体験が得られます。</p>
+  <img src="https://bunkai.com/images/zcc-data-fabric-table-how-to-use.png" alt="Zero Copy Connector - How to Use Data Fabric Table" />
+  <p>この図は、Zero Copy Connectors がどのようにデータソースと連携し、ServiceNow の UI や ACL、アプリ層で使われるかを示しています。ServiceNow 側の権限（ACL）や UI などが、外部データにもそのまま適用されるのが特徴です。</p>
+</section>
+
+<section>
+  <h2>💡 会場で聞いた実践ユースケース</h2>
+  <p>Knowledge 2025 の会場で伺った話として、Zero Copy Connectors は Employee Experience 領域でも活用できる可能性があるという点が印象的でした。</p>
+  <p>たとえば、複数の人事システムに分散しているマスターデータを Snowflake に統合しておき、ServiceNow からは Zero Copy Connectors を通じてそのデータを参照。Flow Designer で必要なデータを簡単に取り込みながらプロセスを設計し、必要な更新があれば Integration Hub のスポークで書き込みに行く、という構成です。</p>
+  <p>これまでは、扱うデータが増えるたびに接続設定やアクセス制御の調整が必要で、業務フローの追加にも手間がかかっていましたが、Zero Copy Connectors によってそのハードルが大きく下がる、というユースケースが想定されているようです。</p>
+</section>
+
+<section>
+  <h2>🚀 これからどう進化しそうか？</h2>
+  <p>Zero Copy Connectors はリリース当初から対応するものと見込まれる Snowflake や Databricks だけでなく、将来的にはオンプレミス環境にある Microsoft SQL Server などのデータソースにも MID Server 経由で対応可能になる可能性についても、セッションでは言及されていました。</p>
+  <p>これにより、クラウド／オンプレを問わず、より幅広いシステムとの連携が視野に入り、データ活用の幅が一段と広がることが期待されます。また、Extensible Connector Framework の進化によって、新たなデータコネクタの追加や統合がより迅速に行えるようになるでしょう。</p>
+</section>
+
+<section>
+  <h2>📘 まとめと呼びかけ</h2>
+  <p>Zero Copy Connectorsをどう理解し、どう活かせるか。今後も引き続き、Now Senseiシリーズで掘り下げていきます。</p>
+  <p>💬 ご意見・活用アイデアなど、ぜひコメントで教えてください！</p>
+  <p>🔗 Part 1（背景と構成図）はこちら → <a href="/now-sensei/zcc-part1/">こちら</a></p>
+</section>
+</main>
 </body>
 </html>
