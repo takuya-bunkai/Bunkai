@@ -27,7 +27,7 @@
 </section>
 
 <section>
-  <h2>🧩 従来手法との違い（Part 1の課題をどう解決するか＋セッション内容の補足）</h2>
+  <h2>🧩 従来手法との違い概要（Part 1の課題をどう解決するか＋セッション内容の補足）</h2>
   <p>Zero Copy Connectors は、Part 1で挙げたような課題──特に「高いメンテナンス負荷」「冗長なデータコピー」「運用負担の増加」──を根本的に解消するために設計されています。</p>
   <table>
     <thead>
@@ -39,9 +39,10 @@
     </thead>
     <tbody>
       <tr>
+        <td rowspan="2">高いメンテナンス負荷</td>
         <td>実装方法</td>
         <td>Scripted REST API + executeQuery スクリプト</td>
-        <td>GlideRecord API で直接アクセス</td>
+        <td>データソースへの接続はZCCで抽象化される</td>
       </tr>
       <tr>
         <td>必要なスキルセット</td>
@@ -49,6 +50,7 @@
         <td>ServiceNowの基本的なデータ構造・連携構成に対する理解があれば対応可能（Pro Code不要）</td>
       </tr>
       <tr>
+        <td rowspan="2">運用負担の増加</td>
         <td>ACLやUI制御</td>
         <td>一部制限あり</td>
         <td>Platformと同様に適用可能</td>
@@ -61,6 +63,12 @@
     </tbody>
   </table>
   <p>ここでいう "構成変更の柔軟性" は、新たな外部データ参照が必要になった際にも、設定ベースで構成を素早く調整できる点を指しています。Zero Copy Connectors は設定ベースでの構成変更が可能で、従来のようにPro Code開発者の関与が必須ではありません。そのため、ビジネス側の要件変化に対して迅速に対応できる柔軟性を備えています。</p>
+  <h3>⚡ キャッシュ戦略とパフォーマンス最適化</h3>
+  <p>Zero Copy Connectors におけるパフォーマンスへの懸念はよく聞かれるポイントの一つです。特に「外部データを都度読み込むのでは遅いのでは？」という疑問に対し、Knowledge 2025 のセッションでは以下のようなコメントがありました。</p>
+  <blockquote>
+    <p>Large scale data search methods that are optimized. It's pulled in, it's highly cached as well, and it allows for more intelligent work to happen.</p>
+  </blockquote>
+  <p>このコメントは、Zero Copy Connectors における外部データの参照は、検索メソッドは最適化されており、取り込まれ、効率的にキャッシュされること。インテリジェンス処理やAIとの連携にも耐える設計であることを示唆しています。</p>
 </section>
 
 
