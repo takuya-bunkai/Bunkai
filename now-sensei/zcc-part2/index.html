@@ -10,7 +10,7 @@
   <meta property="og:image" content="https://bunkai.com/images/now-sensei-default-ogp.png" />
   <meta property="og:url" content="https://bunkai.com/now-sensei/zcc-part2/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="../../style.css" />
 </head>
 <body>
   <header>
@@ -23,7 +23,7 @@
   <h2>🧑‍🏫 Now Sensei シリーズ第2回へようこそ</h2>
   <p>このシリーズでは、ServiceNowの仕組みや設計を“分解し、構造から理解する”視点で解説しています。</p>
   <p>Part 1では、Workflow Data Fabric構想とZero Copy Connectorsの背景・構成図について掘り下げました。</p>
-  <p>今回のPart 2では、「実際にどう使われるのか」「既存手法と何が違うのか」「導入したときどこが変わるのか」──そういった観点で解説していきます。</p>
+  <p>今回のPart 2では、「実際にどう使われるのか」「既存手法と何が違うのか」「導入したときどこが変わるのか」──といった観点で解説していきます。</p>
 </section>
 
 <section>
@@ -34,7 +34,7 @@
       <tr>
         <th>課題</th>
         <th>観点</th>
-        <th>Remote Table</th>
+        <th>Remote Tables</th>
         <th>Zero Copy Connectors</th>
       </tr>
     </thead>
@@ -42,32 +42,30 @@
       <tr>
         <td>1. 高いメンテナンス負荷</td>
         <td>信頼できる唯一の情報源（single source of truth）</td>
-        <td colspan="2" >ローカルコピーが作られないため、データソースが唯一の情報源となる</td>
+        <td colspan="2" >ローカルコピーが作られないため、データソースが唯一の情報源となる （両者共通）</td>
       </tr>
       <tr>
         <td>2. データ遅延</td>
         <td>パフォーマンス</td>
-        <td>（言及なし）</td>
+        <td>（比較対象）</td>
         <td>最適化された検索手法　効率的なキャッシュ</td>
       </tr>
       
       <tr>
         <td>3. 固定的なマッピング構造</td>
         <td>マッピングの実装・変更</td>
-        <td>Pro Code （Script Definition）</td>
-        <td>No Code （マッピング設定画面）</td>
+        <td>Pro Code （Script Definition…REST API + JavaScript によるスクリプト実装）</td>
+        <td>No Code （ServiceNowの基本的なデータ構造・連携構成に対する理解があれば対応可能）</td>
       </tr>
       <tr>
-        <td></td>
-        <td>必要なスキルセット</td>
-        <td>REST API + JavaScript によるスクリプト実装（Pro Code）</td>
-        <td>ServiceNowの基本的なデータ構造・連携構成に対する理解があれば対応可能（Pro Code不要）</td>
-      </tr>
+        <td rowspan="2">4. 自動化の限界</td>
+        <td>リアルタイム処理</td>
+        <td colspan="2">リアルタイム処理 （両者共通）</td>
+              </tr>
       <tr>
-        <td>4. 自動化の限界</td>
-        <td>構成変更の柔軟性</td>
-        <td>スクリプト処理のため構成変更には都度実装が必要</td>
-        <td>設定ベースで柔軟に変更可能（Pro Code不要）<br>→ 新しいデータ参照構成をすぐに実現可能</td>
+        <td>双方向の自動化</td>
+        <td>基本はデータ抽出だが、Script Definition次第ではUpdate処理も可能</td>
+        <td>初期リリースではデータ抽出のみ （将来的にUpdate処理にも対応する可能性あり）</td>
       </tr>
       <tr>
         <td>その他</td>
@@ -78,13 +76,13 @@
       
     </tbody>
   </table>
-  <p>ここでいう "マッピングの実装・変更" は、新たなテーブル参照が必要になった際にも、設定ベースで構成を素早く調整できる点を指しています。Zero Copy Connectors は設定ベースでの構成変更が可能で、従来のようにPro Code開発者の関与が必須ではありません。そのため、ビジネス側の要件変化に対して迅速に対応できる柔軟性を備えています。</p>
+  <p>ここでいう "マッピングの実装・変更" は、新たなテーブル参照が必要になった際にも、設定ベースで構成を素早く調整できることを指しています。Zero Copy Connectors は設定ベースでの構成変更が可能で、Remote Tablesと異なりPro Code開発者が関与する必要がありません。そのため、ビジネス側の要件変化に対して迅速に対応できる柔軟性を備えています。</p>
   <h3>⚡ キャッシュ戦略とパフォーマンス最適化</h3>
-  <p>Zero Copy Connectors におけるパフォーマンスへの懸念はよく聞かれるポイントの一つです。特に「外部データを都度読み込むのでは遅いのでは？」という疑問に対し、Knowledge 2025 のセッションでは以下のようなコメントがありました。</p>
+  <p>外部データ連携におけるパフォーマンスへの懸念はよく聞かれるポイントの一つです。特に「外部データを都度読み込むのでは遅いのでは？」という疑問に対し、Knowledge 2025 のセッションでは以下のようなコメントがありました。</p>
   <blockquote>
     <p>Large scale data search methods that are optimized. It's pulled in, it's highly cached as well, and it allows for more intelligent work to happen.</p>
   </blockquote>
-  <p>このコメントは、Zero Copy Connectors における外部データの参照は、検索メソッドは最適化されており、取り込まれ、効率的にキャッシュされること。インテリジェンス処理やAIとの連携にも耐える設計であることを示唆しています。</p>
+  <p>このコメントは、Zero Copy Connectors における外部データの参照は、検索メソッドは大規模データ検索に最適化されており、取り込まれ、効率的にキャッシュされること。インテリジェンス処理やAIとの連携にも耐える設計であることを示唆しています。</p>
 </section>
 
 
@@ -99,20 +97,20 @@
 
 <section>
   <h2>💡 会場で聞いた実践ユースケース</h2>
-  <p>Knowledge 2025 の会場で伺った話として、Zero Copy Connectors は Employee Experience 領域でも活用できる可能性があるという点が印象的でした。</p>
-  <p>たとえば、複数の人事システムに分散しているマスターデータを Snowflake に統合しておき、ServiceNow からは Zero Copy Connectors を通じてそのデータを参照。Flow Designer で必要なデータを簡単に取り込みながらプロセスを設計し、必要な更新があれば Integration Hub のスポークで書き込みに行く、という構成です。</p>
-  <p>これまでは、扱うデータが増えるたびに接続設定やアクセス制御の調整が必要で、業務フローの追加にも手間がかかっていましたが、Zero Copy Connectors によってそのハードルが大きく下がる、というユースケースが想定されているようです。</p>
+  <p>これはセッション外で聞いた情報なのですが、 Knowledge 2025 の会場で ServiceNow 社員から伺った話として、Zero Copy Connectors は Employee Workflows 領域でも活用できる可能性があるという点が印象的でした。</p>
+  <p>たとえば、複数の人事システムに分散しているマスターデータを Snowflake などに統合しておき、ServiceNow からは Zero Copy Connectors を通じてそのデータを参照。Flow Designer で必要なデータを簡単に取り込みながらプロセスを設計し、必要な更新があれば Integration Hub のスポークで書き込みに行く、という構成です。</p>
+  <p>これまでは、フローで扱いたいデータポイントが増えるたびに接続設定やアクセス制御の調整が必要で、業務フローの追加にも手間がかかっていましたが、Zero Copy Connectors によってそのハードルが大きく下がる、というユースケースが想定されているとのことでした。</p>
 </section>
 
 <section>
   <h2>🚀 これからどう進化しそうか？</h2>
-  <p>Zero Copy Connectors はリリース当初から対応するものと見込まれる Snowflake や Databricks だけでなく、将来的にはオンプレミス環境にある Microsoft SQL Server などのデータソースにも MID Server 経由で対応可能になる可能性についても、セッションでは言及されていました。</p>
-  <p>これにより、クラウド／オンプレを問わず、より幅広いシステムとの連携が視野に入り、データ活用の幅が一段と広がることが期待されます。また、Extensible Connector Framework の進化によって、新たなデータコネクタの追加や統合がより迅速に行えるようになるでしょう。</p>
+  <p>Zero Copy Connectors はリリース当初から対応するものと見込まれる Snowflake や Databricks だけでなく、セッションでは将来的にはオンプレミス環境にある Microsoft SQL Server などのデータソースに MID Server 経由で対応可能になる可能性についても言及されていました。</p>
+  <p>これにより、クラウド／オンプレを問わず、より幅広いシステムとの連携が視野に入り、データ活用の幅が一段と広がることが期待されます。また、モジュラー化された Extensible Connector Framework の仕組みによって、新たなデータコネクタの追加や統合がより迅速に行えるようになるでしょう。</p>
 </section>
 
 <section>
   <h2>📘 まとめと呼びかけ</h2>
-  <p>Zero Copy Connectorsをどう理解し、どう活かせるか。今後も引き続き、Now Senseiシリーズで掘り下げていきます。</p>
+  <p>Zero Copy ConnectorsをはじめとしたWorkflow Data Fabricをどう理解し、どう活かせるか。今後も引き続き、Now Senseiシリーズで掘り下げていきます。</p>
   <p>💬 ご意見・活用アイデアなど、ぜひコメントで教えてください！</p>
   <p>🔗 Part 1（背景と構成図）はこちら → <a href="/now-sensei/zcc-part1/">こちら</a></p>
 </section>
