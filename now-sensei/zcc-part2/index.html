@@ -32,6 +32,7 @@
   <table>
     <thead>
       <tr>
+        <th>課題</th>
         <th>観点</th>
         <th>Remote Table</th>
         <th>Zero Copy Connectors</th>
@@ -39,30 +40,45 @@
     </thead>
     <tbody>
       <tr>
-        <td rowspan="2">高いメンテナンス負荷</td>
-        <td>実装方法</td>
-        <td>Scripted REST API + executeQuery スクリプト</td>
-        <td>データソースへの接続はZCCで抽象化される</td>
+        <td>1. 高いメンテナンス負荷</td>
+        <td>信頼できる唯一の情報源（single source of truth）</td>
+        <td colspan="2" >ローカルコピーが作られないため、データソースが唯一の情報源となる</td>
       </tr>
       <tr>
+        <td>2. データ遅延</td>
+        <td>パフォーマンス</td>
+        <td>（言及なし）</td>
+        <td>最適化された検索手法　効率的なキャッシュ</td>
+      </tr>
+      
+      <tr>
+        <td>3. 固定的なマッピング構造</td>
+        <td>マッピングの実装・変更</td>
+        <td>Pro Code （Script Definition）</td>
+        <td>No Code （マッピング設定画面）</td>
+      </tr>
+      <tr>
+        <td></td>
         <td>必要なスキルセット</td>
         <td>REST API + JavaScript によるスクリプト実装（Pro Code）</td>
         <td>ServiceNowの基本的なデータ構造・連携構成に対する理解があれば対応可能（Pro Code不要）</td>
       </tr>
       <tr>
-        <td rowspan="2">運用負担の増加</td>
-        <td>ACLやUI制御</td>
-        <td>一部制限あり</td>
-        <td>Platformと同様に適用可能</td>
-      </tr>
-      <tr>
+        <td>4. 自動化の限界</td>
         <td>構成変更の柔軟性</td>
         <td>スクリプト処理のため構成変更には都度実装が必要</td>
         <td>設定ベースで柔軟に変更可能（Pro Code不要）<br>→ 新しいデータ参照構成をすぐに実現可能</td>
       </tr>
+      <tr>
+        <td>その他</td>
+        <td>ACL制御</td>
+        <td>一部制限あり</td>
+        <td>Platformと同様に適用可能</td>
+      </tr>
+      
     </tbody>
   </table>
-  <p>ここでいう "構成変更の柔軟性" は、新たな外部データ参照が必要になった際にも、設定ベースで構成を素早く調整できる点を指しています。Zero Copy Connectors は設定ベースでの構成変更が可能で、従来のようにPro Code開発者の関与が必須ではありません。そのため、ビジネス側の要件変化に対して迅速に対応できる柔軟性を備えています。</p>
+  <p>ここでいう "マッピングの実装・変更" は、新たなテーブル参照が必要になった際にも、設定ベースで構成を素早く調整できる点を指しています。Zero Copy Connectors は設定ベースでの構成変更が可能で、従来のようにPro Code開発者の関与が必須ではありません。そのため、ビジネス側の要件変化に対して迅速に対応できる柔軟性を備えています。</p>
   <h3>⚡ キャッシュ戦略とパフォーマンス最適化</h3>
   <p>Zero Copy Connectors におけるパフォーマンスへの懸念はよく聞かれるポイントの一つです。特に「外部データを都度読み込むのでは遅いのでは？」という疑問に対し、Knowledge 2025 のセッションでは以下のようなコメントがありました。</p>
   <blockquote>
