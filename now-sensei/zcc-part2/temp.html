@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>分かった気になる Zero Copy Connectors – How It Works and Where It Fits（Part 2） | Now Sensei</title>
+  <meta name="description" content="Now Sensei シリーズ第2回。Zero Copy Connectorsの活用場面、実装観点、従来手法との違いについて解説します。">
+  <meta property="og:title" content="分かった気になる Zero Copy Connectors – Now Sensei (Part 2)" />
+  <meta property="og:description" content="ServiceNow Senseiシリーズ第2回。構造を理解したうえでの活用方法や従来手法との比較を整理。" />
+  <meta property="og:image" content="https://bunkai.com/images/now-sensei-default-ogp.png" />
+  <meta property="og:url" content="https://bunkai.com/now-sensei/zcc-part2/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Now Sensei シリーズ</h1>
+    <p>分かった気になる Zero Copy Connectors – How It Works and Where It Fits（Part 2）</p>
+  </header>
+
+  <main>
+<section>
+  <h2>🧑‍🏫 Now Sensei シリーズ第2回へようこそ</h2>
+  <p>このシリーズでは、ServiceNowの仕組みや設計を“分解し、構造から理解する”視点で解説しています。</p>
+  <p>Part 1では、Workflow Data Fabric構想とZero Copy Connectorsの背景・構成図について掘り下げました。</p>
+  <p>今回のPart 2では、「実際にどう使われるのか」「既存手法と何が違うのか」「導入したときどこが変わるのか」──そういった観点で解説していきます。</p>
+</section>
+
+<section>
+  <h2>🧩 従来手法との違い（Part 1の課題をどう解決するか＋セッション内容の補足）</h2>
+  <p>特に同様のことを実現できる類似のアーキテクチャーである Remote Table との比較を通して、Zero Copy Connectors の特徴を整理してみます。</p>
+  <p>Zero Copy Connectors は、Part 1で挙げたような課題──特に「高いメンテナンス負荷」「冗長なデータコピー」「運用負担の増加」──を根本的に解消するために設計されています。</p>
+  <table>
+    <thead>
+      <tr>
+        <th>観点</th>
+        <th>Remote Table</th>
+        <th>Zero Copy Connectors</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>実装方法</td>
+        <td>Scripted REST API + executeQuery スクリプト</td>
+        <td>GlideRecord API で直接アクセス</td>
+      </tr>
+      <tr>
+  <td>必要なスキルセット</td>
+  <td>REST API + JavaScript によるスクリプト実装（Pro Code）<br>Remote Table の場合、Script definitions を作成する必要があり、接続先データソースのスキーマをコーディング可能なレベルで詳細に理解している人が関与する必要があります。</td>
+        <td>ServiceNowの基本的なデータ構造・連携構成に対する理解があれば対応可能（Pro Code不要）</td>
+      </tr>
+      <tr>
+        <td>ACLやUI制御</td>
+        <td>一部制限あり</td>
+        <td>Platformと同様に適用可能</td>
+      </tr>
+      <tr>
+        <td>構成変更の柔軟性</td>
+        <td>スクリプト処理のため構成変更には都度実装が必要</td>
+        <td>設定ベースで柔軟に変更可能（Pro Code不要）<br>→ 新しいデータ参照構成をすぐに実現可能</td>
+      </tr>
+    </tbody>
+<h3>📌 Remote Table に必要な技術的スキル・リソースの詳細</h3>
+<p>特に Remote Table の場合は、Script definitions を作成する必要があり、接続先データソースのスキーマをコーディング可能なレベルで詳細に理解している人が関与する必要があります。これは、実装のたびにデータソース側の技術者リソースが必要になることを意味します。</p>
+</p>
+  <h3>⚡ キャッシュ戦略とパフォーマンス最適化</h3>
+
+</section>
+
+
+
+<section>
+  <h2>🔍 どう使うのか？（開発・実装視点）</h2>
+  <p>Zero Copy Connectors を通じて提供されるデータファブリックテーブルは、GlideRecord API を使って通常のテーブルと同じように読み取りが可能です。開発者は特別なスクリプトや変換処理を書くことなく、ServiceNow のアプリケーション層から外部データをそのまま扱うことができます。</p>
+  <p>セッション内でも "you have full GlideRecord access" と強調されていたように、Zero Copy Connectors は既存の開発スキルをそのまま活かせるアプローチです。開発者にとっては、まるで Now Platform 内のネイティブテーブルを扱っているかのような体験が得られます。</p>
+  <img src="https://bunkai.com/now-sensei/images/zcc-data-fabric-table-how-to-use.png" style="max-width: 100%; height: auto;" alt="Zero Copy Connector - How to Use Data Fabric Table" />
+  <p>この図は、Zero Copy Connectors がどのようにデータソースと連携し、ServiceNow の UI や ACL、アプリ層で使われるかを示しています。ServiceNow 側の権限（ACL）や UI などが、外部データにもそのまま適用されるのが特徴です。</p>
+</section>
+<section>
+  <h2>⚡ 肝心のパフォーマンスは？</h2>
+  <p>Zero Copy Connectors におけるパフォーマンスへの懸念はよく聞かれるポイントの一つです。特に「外部データを都度読み込むのでは遅いのでは？」という疑問に対し、Knowledge 2025 のセッションでは以下のようなコメントがありました。</p>
+  <blockquote>
+    <p>Large scale data search methods that are optimized. It's pulled in, it's highly cached as well, and it allows for more intelligent work to happen.</p>
+  </blockquote>
+  <p>このコメントは、Zero Copy Connectors における外部データの参照が、キャッシュによって効率化され、知的処理やAIとの連携にも耐える設計であることを示唆しています。</p>
+
+  <p>Knowledge 2025 の会場で伺った話として、Zero Copy Connectors は Employee Experience 領域でも活用できる可能性があるという点が印象的でした。</p>
+  <p>たとえば、複数の人事システムに分散しているマスターデータを Snowflake に統合しておき、ServiceNow からは Zero Copy Connectors を通じてそのデータを参照。Flow Designer で必要なデータを簡単に取り込みながらプロセスを設計し、必要な更新があれば Integration Hub のスポークで書き込みに行く、という構成です。</p>
+  <p>これまでは、扱うデータが増えるたびに接続設定やアクセス制御の調整が必要で、業務フローの追加にも手間がかかっていましたが、Zero Copy Connectors によってそのハードルが大きく下がる、というユースケースが想定されているようです。</p>
+</section>
+
+<section>
+  <h2>🚀 これからどう進化しそうか？</h2>
+  <p>Zero Copy Connectors はリリース当初から対応するものと見込まれる Snowflake や Databricks だけでなく、将来的にはオンプレミス環境にある Microsoft SQL Server などのデータソースにも MID Server 経由で対応可能になる可能性についても、セッションでは言及されていました。</p>
+  <p>これにより、クラウド／オンプレを問わず、より幅広いシステムとの連携が視野に入り、データ活用の幅が一段と広がることが期待されます。また、Extensible Connector Framework の進化によって、新たなデータコネクタの追加や統合がより迅速に行えるようになるでしょう。</p>
+</section>
+
+<section>
+  <h2>📘 まとめと呼びかけ</h2>
+  <p>Zero Copy Connectorsをどう理解し、どう活かせるか。今後も引き続き、Now Senseiシリーズで掘り下げていきます。</p>
+  <p>💬 ご意見・活用アイデアなど、ぜひコメントで教えてください！</p>
+  <p>🔗 Part 1（背景と構成図）はこちら → <a href="/now-sensei/zcc-part1/">こちら</a></p>
+</section>
+</main>
+</body>
+</html>
